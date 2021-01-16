@@ -1,10 +1,3 @@
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <WebServer.h>
-
-const char* ssid = "........";
-const char* password = "........";
-
 WebServer server(80);
 
 //Check if header is present and correct
@@ -94,23 +87,7 @@ void handleNotFound() {
 }
 
 void server_setup() {
-  if (WiFi.status() != WL_CONNECTED) {
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-    Serial.println("");
-  }
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-
-
   server.on("/", handleRoot);
   server.on("/login", handleLogin);
   server.on("/inline", []() {

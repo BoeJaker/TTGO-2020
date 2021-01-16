@@ -1,0 +1,927 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pad",
+				"padding-top\tproperty"
+			],
+			[
+				"blog",
+				"BlogSpider"
+			],
+			[
+				"wo",
+				"Workspace_Window"
+			],
+			[
+				"clo",
+				"CloseAllButton"
+			],
+			[
+				"Web",
+				"WebAdminButton"
+			],
+			[
+				"Pro",
+				"ProgrammingButton"
+			],
+			[
+				"Trading",
+				"TradingButton"
+			],
+			[
+				"Comp",
+				"Computers_Window"
+			],
+			[
+				"Work",
+				"Workspace_Window"
+			],
+			[
+				"start",
+				"Start-Process"
+			],
+			[
+				"w",
+				"w"
+			],
+			[
+				"scr",
+				"screen_width"
+			],
+			[
+				"Process",
+				"ProcessID"
+			],
+			[
+				"eth",
+				"eth_dev"
+			],
+			[
+				"drizzle-launch",
+				"drizzle-launch-project"
+			],
+			[
+				"cr",
+				"crypto_project_menu"
+			],
+			[
+				"subgraph",
+				"subgraph-init"
+			],
+			[
+				"sub",
+				"subgraph-launch"
+			],
+			[
+				"geth",
+				"geth-launch"
+			],
+			[
+				"drizzl",
+				"drizzle-launch"
+			],
+			[
+				"truffle",
+				"truffle-launch"
+			],
+			[
+				"help",
+				"Help"
+			],
+			[
+				"write",
+				"write-Host"
+			],
+			[
+				"Window",
+				"Windows-Scripts"
+			],
+			[
+				"Write",
+				"Write-Host"
+			],
+			[
+				"dir",
+				"directory"
+			],
+			[
+				"read_",
+				"read_record"
+			],
+			[
+				"trade",
+				"trade_object_list"
+			],
+			[
+				"good",
+				"good_trades"
+			],
+			[
+				"add",
+				"add_record"
+			],
+			[
+				"stra",
+				"strategy"
+			],
+			[
+				"__",
+				"__name__"
+			],
+			[
+				"error",
+				"errorcount"
+			],
+			[
+				"param",
+				"parameter"
+			],
+			[
+				"port",
+				"portfolio"
+			],
+			[
+				"order",
+				"orderQuantity"
+			],
+			[
+				"pa",
+				"parameter"
+			],
+			[
+				"para",
+				"parameterB"
+			],
+			[
+				"str",
+				"strategy"
+			],
+			[
+				"Backtester_",
+				"backtester_object"
+			],
+			[
+				"st",
+				"strategy"
+			],
+			[
+				"back",
+				"backtester_object"
+			],
+			[
+				"parameter",
+				"parameterB"
+			],
+			[
+				"Low",
+				"Low"
+			],
+			[
+				"coinbase",
+				"coinbasepro"
+			],
+			[
+				"ex",
+				"exch"
+			],
+			[
+				"par",
+				"parameterA"
+			],
+			[
+				"backtester",
+				"Backtester"
+			],
+			[
+				"watch",
+				"watcher_thread"
+			],
+			[
+				"cur",
+				"cur_sent"
+			],
+			[
+				"can",
+				"Candlestick"
+			],
+			[
+				"go",
+				"go"
+			],
+			[
+				"file",
+				"filename"
+			],
+			[
+				"create",
+				"create_unique_table_sql"
+			],
+			[
+				"db",
+				"db_handler"
+			],
+			[
+				"proce",
+				"processPlots"
+			],
+			[
+				"steps",
+				"step_size"
+			],
+			[
+				"parameterA",
+				"parameterA"
+			],
+			[
+				"parm",
+				"parameterA"
+			],
+			[
+				"e",
+				"except"
+			],
+			[
+				"s",
+				"strategy"
+			],
+			[
+				"indicator",
+				"indicators"
+			],
+			[
+				"data",
+				"database-button"
+			],
+			[
+				"ifr",
+				"iframe_a"
+			],
+			[
+				"tr",
+				"True"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"cor",
+				"color2"
+			],
+			[
+				"cu",
+				"countdown"
+			],
+			[
+				"margin-",
+				"margin-left\tproperty"
+			],
+			[
+				"text-a",
+				"text-align\tproperty"
+			],
+			[
+				"exch",
+				"exch_obj"
+			],
+			[
+				"att",
+				"attributes"
+			],
+			[
+				"font",
+				"font-weight\tproperty"
+			],
+			[
+				"check",
+				"check_update"
+			],
+			[
+				"first",
+				"firstrun"
+			],
+			[
+				"set",
+				"set_data"
+			],
+			[
+				"obj",
+				"obj"
+			],
+			[
+				"pair",
+				"pair_object"
+			],
+			[
+				"sma",
+				"sma_fast"
+			],
+			[
+				"eva",
+				"evaluate-data"
+			],
+			[
+				"print",
+				"print_functions"
+			],
+			[
+				"lo",
+				"log"
+			],
+			[
+				"time",
+				"timestamp"
+			],
+			[
+				"log",
+				"log_cache"
+			],
+			[
+				"not",
+				"notify_trade"
+			],
+			[
+				"sort",
+				"sort_results"
+			],
+			[
+				"sy",
+				"symbols"
+			],
+			[
+				"ev",
+				"evaluate-data"
+			],
+			[
+				"Print",
+				"printerrors"
+			],
+			[
+				"col",
+				"close"
+			],
+			[
+				"run",
+				"run_all_strategies"
+			],
+			[
+				"in",
+				"indicator"
+			],
+			[
+				"strate",
+				"strategy"
+			],
+			[
+				"MA",
+				"MA_CrossOver"
+			],
+			[
+				"indi",
+				"indicator"
+			],
+			[
+				"to",
+				"to_csv"
+			],
+			[
+				"exchange",
+				"exchange"
+			],
+			[
+				"Exc",
+				"Exception"
+			],
+			[
+				"exc",
+				"except"
+			],
+			[
+				"date",
+				"dateparse"
+			],
+			[
+				"se",
+				"self"
+			],
+			[
+				"symbol",
+				"symbol"
+			],
+			[
+				"fetch",
+				"fetchOHLCV"
+			],
+			[
+				"ba",
+				"backtesters"
+			],
+			[
+				"SM",
+				"SMA_CrossOver"
+			],
+			[
+				"Cross",
+				"SMA_CrossOver"
+			],
+			[
+				"firs",
+				"firstStrategy"
+			],
+			[
+				"buy",
+				"buysig"
+			],
+			[
+				"paramter",
+				"parameterB"
+			],
+			[
+				"sell",
+				"sellsig"
+			],
+			[
+				"close",
+				"close"
+			],
+			[
+				"sup",
+				"supported_exchanges"
+			],
+			[
+				"get",
+				"get_data"
+			],
+			[
+				"excha",
+				"exchange"
+			],
+			[
+				"Price",
+				"PRICE"
+			],
+			[
+				"df",
+				"df_time_offset"
+			],
+			[
+				"i",
+				"i"
+			],
+			[
+				"button",
+				"Button"
+			],
+			[
+				"colo",
+				"color_negative"
+			],
+			[
+				"colu",
+				"column"
+			],
+			[
+				"gra",
+				"Gray43"
+			],
+			[
+				"color",
+				"color_foreground"
+			],
+			[
+				"background",
+				"color_background"
+			],
+			[
+				"curr",
+				"currency"
+			],
+			[
+				"currnecy",
+				"currency_top"
+			],
+			[
+				"currency",
+				"currency_top"
+			],
+			[
+				"com",
+				"columns"
+			],
+			[
+				"crypto",
+				"crypto_tickers"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "TTWatch_2020_Server.py",
+			"settings":
+			{
+				"buffer_size": 456,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "import http.server"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 310,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "<!DOCTYPE html>"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"colo",
+				"UI: Select Color Scheme"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 172.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Lenovo/Files/git/multicall.js/README.md",
+		"/C/Users/Lenovo/mysite/Home/index.html",
+		"/C/Users/Lenovo/mysite/polls/views.py",
+		"/C/Users/Lenovo/mysite/polls/urls.py",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/Automation/Build-PS1-Systray-Tool/MySystrayTool/resources/custom.xaml",
+		"/C/Users/Lenovo/Files/git/Build-PS1-Systray-Tool/README.md",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/Automation/systray.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/CryptoDev.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/Speed-Dial.ps1",
+		"/C/Users/Lenovo/Documents/Set-Window.ps1",
+		"/C/Users/Lenovo/Files/git/ipfs-test/ipfs-test.html",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/netowrk-device-list.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/PrIvate Network.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/printerTest.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/README.md",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/POSHGUItest.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/.project",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/Auto-git",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/Always on top.ahk",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/Auto-git.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/detect-key-press.ps1",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/Generic-workspace.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/elevate.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/keyboard-backlight.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/list-lan.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/ListSelectorWindow.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/media_controls.ahk",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/GitEditorMode.ps1",
+		"/C/Users/Lenovo/Files/git/facial-recognition-logout/Facial_Recognition_V4.py",
+		"/C/Users/Lenovo/Files/git/facial-recognition-logout/cortanaSpeech.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/IsUp.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/Thinkpad_docking_script.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/ovpn start.ps1",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/arrange_windows.ps1",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/ShowProcess.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/pass.txt",
+		"/C/Users/Lenovo/Files/git/Windows-Scripts/menu-template.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/ssh_start.ps1",
+		"/C/Users/Lenovo/files/git/Windows-Scripts/Todo.txt",
+		"/F/USERS/crypt.txt",
+		"/C/Users/Lenovo/git/CryptoHub/CryptoTrader2020/To integrate/Personal-server.py",
+		"/C/Users/Lenovo/git/AI_Stock_Trading/AI_Stock_Trading.py",
+		"/C/Users/Lenovo/git/CryptoHub/CryptoTrader2020/AI/LSTM_Trader_AI.py",
+		"/E/Backups/2019 HP Blue/webcamscript.sh",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/Legacy Backtester/cryptowatch_V2.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/Legacy Backtester/ohlcv-data-analyser.py",
+		"/C/Users/Lenovo/git/CryptoHub/CryptoTrader2020/Graphs/test_PDF_thumbnails.html",
+		"/C/Users/Lenovo/git/CryptoHub/CryptoTrader2020/Trading_AI.py",
+		"/C/Users/Lenovo/AppData/Roaming/Sublime Merge/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Lenovo/git/CryptoHub/CryptoTrader2020/BackTrader_Project.sublime-project",
+		"/C/Users/Lenovo/Desktop/Trading Quick Start.bat",
+		"/C/Users/Lenovo/Programs/noisy/noisy.py",
+		"/C/Users/Lenovo/Backups/home.html",
+		"/C/Users/Lenovo/AppData/Local/Temp/fz3temp-2/home.html",
+		"/C/Users/Lenovo/Workspace/Raspberry Server/motion_auto_kill.sh",
+		"/C/Users/Lenovo/AppData/Local/Temp/fz3temp-3/UFW_VPN_Switch_new.sh",
+		"/C/Users/Lenovo/AppData/Local/Temp/fz3temp-2/UFW_VPN_Switch.sh",
+		"/C/Users/Lenovo/AppData/Local/Temp/fz3temp-2/Test_UFW_Rules.sh",
+		"/C/Users/Lenovo/AppData/Local/Temp/fz3temp-2/UFW_VPN_Switch 2.sh",
+		"/C/wamp64/bin/apache/apache2.4.41/conf/httpd.conf",
+		"/C/wamp64/wampmanager.conf",
+		"/C/wamp64/www/home/fullscreen.js",
+		"/C/wamp64/www/home/home.html",
+		"/C/wamp64/www/home/mystyle.css",
+		"/C/wamp64/www/home/fetch-website.php",
+		"/C/wamp64/www/home/myscript.js",
+		"/C/Users/Lenovo/Workspace/homepage/home.html",
+		"/C/Users/Lenovo/Workspace/homepage/fetch-website.php",
+		"/C/Users/Lenovo/Workspace/homepage/fullscreen.js",
+		"/C/Users/Lenovo/Workspace/homepage/mystyle.css",
+		"/C/Users/Lenovo/Workspace/homepage/myscript.js",
+		"/C/wamp64/www/boejaker/.htaccess",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/AI_Portfolio_Manager_Dev.py",
+		"/C/Users/Lenovo/Workspace/Homepage/home.html",
+		"/C/Users/Lenovo/Google Drive/Workspace - old/Programming/GitRepos/trading-board/README.md",
+		"/C/Users/Lenovo/vlc-protocol/windows/README.md",
+		"/C/Users/Lenovo/Programs/noisy/README.md",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/backtest-one.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/backtester.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/ohlcv-data-analyser.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/cryptowatch_V2.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/cryptowatch.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/cryptodash.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/AI_Portfolio_Manager.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/Personal-server.py",
+		"/C/Users/Lenovo/git/CryptoHub/Legacy/ohlcv-data.py",
+		"/C/Users/Lenovo/AppData/Local/Programs/Python/Python37/Lib/site-packages/pyHook/HookManager.py",
+		"/C/Users/Lenovo/Pictures/Design/Social Media/Articles/docs/man/README.md",
+		"/C/Users/Lenovo/Workspace/Legacy - to delete/AI/Facial recognition/facialRecognition3.py",
+		"/C/Users/Lenovo/Workspace/Legacy - to delete/AI/Facial recognition/facialRecognition2.py",
+		"/C/Users/Lenovo/Workspace/Legacy - to delete/AI/Facial recognition/Facial_Recognition_V4.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Crypto Dashbard Specification.txt",
+		"/C/Users/Lenovo/Workspace/Micro Controllers/NeoController/NeoController.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/Components.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/wsgi.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/AITrader_App.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/Dash_App.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/Backtester_App.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/Backtester.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/Backtester dash/InsightsUI_Server.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/AI_Portfolio_Manager.py",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/ohlcv-data-analyser.py",
+		"/C/Users/Lenovo/git/CryptoHub/CryptoWeb/Backtester dash/Readme.txt",
+		"/C/Users/Lenovo/noisy/config.json",
+		"/C/Snort/etc/snort.conf",
+		"/C/Users/Lenovo/Workspace/Crypto/CryptoWeb/IBM.csv",
+		"/C/Users/Lenovo/Workspace/Kali/tools-dialog.sh",
+		"/C/Users/Lenovo/Workspace/Smart Contracts/ETH/eth_account.sol",
+		"/C/Users/Lenovo/Downloads/metasploitable3-master/metasploitable3-master/README.md",
+		"/C/Users/Lenovo/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/BakedUI.py",
+		"/C/Users/Lenovo/Workspace/CryptoWeb/BakedUI_2.py",
+		"/C/Users/Lenovo/Workspace/CryptoWeb/ohlcv-data-analyser.py",
+		"/C/Users/Lenovo/Workspace/CryptoWeb/Personal-server.py",
+		"/C/Users/Lenovo/Workspace/home.html",
+		"/C/Users/Lenovo/Workspace/CryptoWeb/cryptowatch_V2.py",
+		"/C/Users/Lenovo/Workspace/search.php",
+		"/C/Users/Lenovo/Workspace/.htaccess",
+		"/C/Users/Lenovo/Workspace/home.php",
+		"/C/Users/Lenovo/Workspace/CryptoWeb/cryptodash.py",
+		"/C/Users/Lenovo/Workspace/CryptoWeb/backtest-one.py",
+		"/C/Users/Lenovo/Workspace/Web Server/cryptoInit.py",
+		"/C/Users/Lenovo/Workspace/Web Server/server.py",
+		"/C/Users/Lenovo/Workspace/Web Server/httpInit.py",
+		"/C/Users/Lenovo/Workspace/Web Server/tools.py",
+		"/C/Users/Lenovo/Documents/Medium/Top Altcoins",
+		"/C/Users/Lenovo/Documents/Medium/Why EOS will confiscate your tokens if you HODL.txt",
+		"/C/Users/Lenovo/Documents/Medium/Notebook",
+		"/C/Users/Lenovo/about max hodl.txt"
+	],
+	"find":
+	{
+		"height": 29.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "TTWatch_2020_Server.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 456,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								187,
+								187
+							]
+						],
+						"settings":
+						{
+							"auto_name": "import http.server",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 310,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								310,
+								310
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<!DOCTYPE html>",
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 41.3333333333
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.stino_build_panel":
+	{
+		"height": 41.0
+	},
+	"output.stino_panel":
+	{
+		"height": 41.0
+	},
+	"pinned_build_system": "Packages/arduino-cli/arduino-cli.sublime-build",
+	"project": "TT_Watch_2020_Server.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\Users\\Lenovo\\AppData\\Roaming\\Sublime Text 3\\Packages\\User\\Projects\\Website.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 144.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

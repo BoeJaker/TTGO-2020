@@ -1,24 +1,56 @@
+
+//  RTC_Date tnow = ttgo->rtc->getDateTime();
+//
+//  hh = tnow.hour;
+//  mm = tnow.minute;
+//  ss = tnow.second;
+//  dday = tnow.day;
+//  mmonth = tnow.month;
+//  yyear = tnow.year;
+
+
 //keep time, this code is kind of a hot mess and could use a good refactor
 //also handles drawing time and date to the display
 
 boolean correctTime = true;
 //header file for the time.h library https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/esp32-hal-timer.h (closest thing to documentation I've found so far)
+//
+//
+//struct
+void mjd_set_timezone_gmt()
+{
+  ESP_LOGD(TAG, "%s()", __FUNCTION__);
+  // @doc https://remotemonitoringsystems.ca/time-zone-abbreviations.php
+  // @doc timezone UTC = UTC
+  setenv("TZ", "GMT+0BST-1", 1);
+  tzset();
+}
 
-
-struct
 
 String getInternetTime()
 {
   mjd_set_timezone_gmt();
   
   //connect to WiFi
-  wifiConnect();
+//  wifiConnect();
   
   WiFi.mode(WIFI_STA);
   //init and get the time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   delay(1000);
   printLocalTime();
+  mjd_set_timezone_gmt();
+  time(&now);
+  timeinfo = localtime(&now);
+
+  byte Hour = timeinfo->tm_hour;
+  byte Minute = timeinfo->tm_min;
+  byte Second = timeinfo->tm_sec;
+  byte Day = timeinfo->tm_mday;
+  byte Month = timeinfo->tm_mon;
+  byte Year = timeinfo->tm_year;
+
+  ttgo->rtc->setDateTime(Year, Month, Day, Hour, Minute, Second);
   return "00:00:00AM";
 }
 
@@ -76,7 +108,7 @@ void drawDate(int x, int y, int textSize)
   for (int a = 0; a < Date.length(); a++)
   {
     ttgo->tft->setCursor(x + a * 6 * textSize, y);
-    tft->fillRect(x + a * 6 * textSize, y, 6 * textSize, 10 * textSize, TFT_BLACK); //Ticker 
+    ttgo->tft->fillRect(x + a * 6 * textSize, y, 6 * textSize, 10 * textSize, TFT_BLACK); //Ticker 
     ttgo->tft->print(Date[a]);
   }
 }
@@ -127,7 +159,7 @@ void drawDateCentered(int y, int textSize)
   for (int a = 0; a < Date.length(); a++)
   {
     ttgo->tft->setCursor(x + a * 6 * textSize, y);
-    tft->fillRect(x + a * 6 * textSize, y, 6 * textSize, 10 * textSize, TFT_BLACK); //Ticker pair
+    ttgo->tft->fillRect(x + a * 6 * textSize, y, 6 * textSize, 10 * textSize, TFT_BLACK); //Ticker pair
     ttgo->tft->print(Date[a]);
   }
 }
@@ -194,7 +226,7 @@ void drawTime(int x, int y, int textSize)
   for (int a = 0; a < 11; a++)
   {
     ttgo->tft->setCursor(x + a * 6 * textSize, y);
-    tft->fillRect(x + a * 6 * textSize, y, 6 * textSize, 8 * textSize, TFT_BLACK); //Ticker pair
+    ttgo->tft->fillRect(x + a * 6 * textSize, y, 6 * textSize, 8 * textSize, TFT_BLACK); //Ticker pair
     ttgo->tft->print(timestr[a]);
   }
 }
