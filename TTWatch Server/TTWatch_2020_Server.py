@@ -89,7 +89,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 		elif command == "Backup": 
 			print("System backup selected")
 		elif command == "Git Upload": 
-			os.system(auto_git_script)
+			os.system("cd "+git_folder+" ; & "+auto_git_script)
 		elif command == "Trade": 
 			print("Trading mode selected")
 		elif command == "Program": 
