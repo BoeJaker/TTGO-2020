@@ -45,6 +45,10 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 	def do_POST(self): # Parses POST Requests
 
+		content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
+		post_data = self.rfile.read(content_length) # <--- Gets the data itself
+		print(post_data)
+
 		query_components = parse_qs(urlparse(self.path).query)
 		print(query_components)
 
@@ -86,30 +90,43 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 		#Parses command arguments
 		if command == "Settings": 
 			webbrowser.open("http://127.0.0.1:"+str(MyHttpRequestHandler.PORT)+"/?key="+MyHttpRequestHandler.SEC_KEY, new=2)
+		
 		elif command == "Backup": 
 			print("System backup selected")
+		
 		elif command == "Git Upload": 
 			os.system("cd "+git_folder+" ; & "+auto_git_script)
+		
 		elif command == "Trade": 
 			print("Trading mode selected")
+		
 		elif command == "Program": 
 			print("Programming mode selected")
+		
 		elif command == "Web Admin": 
 			print("Web Admin mode selected")
+		
 		elif command == "Lock": 
 			ctypes.windll.user32.LockWorkStation() 
+		
 		elif command == "Shutdown": 
 			os.system("shutdown /s /t 1") 
+		
 		elif command == "Harden": 
 			print("Harden selected")
+		
 		elif command == "Obfuscate": 
 			print("Obfuscate selected")
+		
 		elif command == "Monitor": 
 			print("Monitor selected")
+		
 		elif command == "Facial_Recognition_Lock": 
 			call(["python", "C:\\Users\\Lenovo\\Files\\git\\facial-recognition-logout\\Facial_Recognition_V4.py"])
+		
 		elif command == "Restart Server":
 			print("Restarting server")
+		
 		else:
 			print("Command not recognised")
 

@@ -73,7 +73,7 @@
 #define wifi_ssid2 {"BTHub6-W7TF"}
 #define wifi_password2 {"NbyCy4Q3RKhk"}
 
-const char* serverName = "192.168.1.102:8000/";
+const char* serverName = "http://192.168.1.102:8000/";
 
 // Your Screen Prefrences
 int screenOnTime =  30000; //time before watch screen times out without user input
@@ -326,5 +326,6 @@ void request(String command){
         
       // Free resources
       http.end();
+      delay(100);
   }
 }
