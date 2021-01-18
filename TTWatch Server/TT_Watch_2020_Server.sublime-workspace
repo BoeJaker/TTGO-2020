@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"quer",
+				"query_components"
+			],
+			[
+				"data",
+				"data2"
+			],
+			[
+				"git",
+				"git_folder"
+			],
+			[
+				"co",
+				"command_handler"
+			],
+			[
+				"Quer",
+				"query_components"
+			],
+			[
 				"pad",
 				"padding-top\tproperty"
 			],
@@ -252,10 +272,6 @@
 				"indicators"
 			],
 			[
-				"data",
-				"database-button"
-			],
-			[
 				"ifr",
 				"iframe_a"
 			],
@@ -498,35 +514,51 @@
 			[
 				"curr",
 				"currency"
-			],
-			[
-				"currnecy",
-				"currency_top"
-			],
-			[
-				"currency",
-				"currency_top"
-			],
-			[
-				"com",
-				"columns"
-			],
-			[
-				"crypto",
-				"crypto_tickers"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"contents": "# TTWatch Companion Server\n# This server allows the Twatch2020 or any other web client to remote control the PC running the server and its periphaerals\n\n# NOTE\n# A certificate must be generated using keygen before running the server - could automate later\n\n# TODO \n# Near-term:\n# Add compatability functions for use on a raspberry pi\n# Clean up arg parsing in POST function\n# Add key pair generation instead of using passwords\n\n# Long-term:\n# Add extended features to GET or even allow the server to make POST requests back to the watch to update variables internal to the watch.\n# Add a UI for adding functions (not disimilar from unified remote)\n# Add the ability to upload roms through web interface\n# Automate keygen\n\n# Server Imports\nimport http.server\nimport socketserver\nfrom urllib.parse import urlparse, parse_qs\nimport ssl\n\n# Regex\nimport re\n\n# Operating System Interfacing\nimport os\nimport ctypes\nfrom subprocess import call\n\nfrom io import BytesIO\n\n# Web Browser Control\nimport webbrowser\n\n# Folder Locations\ngit_folder = '\"C:\\\\Users\\\\Lenovo\\\\Files\\\\git\"'\nauto_git_script = '\"C:\\\\Users\\\\Lenovo\\\\Files\\\\git\\\\Windows-Scripts\\\\Git_Scripts\\\\Auto-git.ps1\"'\n\n# Server Setup\nPORT = 8000\n\n# HTTP Request Class\nclass MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):\n\n\tPORT = 8000\n\tSEC_KEY = \"1010\" # This key is rudimentary access control to be substituted with HTTPS for encryption & a further access keypair for both the server and client\n\n\tdef do_GET(self): # Parses GET requests\n\n\t\tquery_components = parse_qs(urlparse(self.path).query)\n\t\tprint(query_components)\n\n\t\tregex='/\\?.*key='+MyHttpRequestHandler.SEC_KEY+\".*\"\n\n\t\tif re.match(regex,  self.path) is not None:\n\n\t\t\ttry:\n\t\t\t\tself.command_switch(query_components[\"command\"][0], query_components[\"argument\"][0])\n\t\t\texcept:\n\t\t\t\tpass\n\n\t\t\tself.path = 'index.html'\n\t\t\treturn http.server.SimpleHTTPRequestHandler.do_GET(self)\n\t\telse: # if path did not contain key\n\t\t\treturn\n\n\tdef do_POST(self): # Parses POST Requests\n\t#NOTE - the data parsing portion of this code is a hot mess. It needs unifying so that instead of the two types of input being processed in its own way \n\t# the data is pulled, converted to the same format e.g. a string, then checked for bad input. after that the string can be spilt into a dictonary.\n\t# Note that data pulled from parse_qs is encapsulated in a list so needs to be called with a [0].\n\t\t\n\t\tquery_components = parse_qs(urlparse(self.path).query)# Tries to acquire url arguments the normal way\n\t\t\n\t\t# If query_components empty, fallback, try to acquire them directly from the input stream\n\t\tif (len(query_components) <= 1):\n\n\t\t\tcontent_length = int(self.headers['Content-Length']) # <--- Gets the size of data\n\t\t\tpost_data = self.rfile.read(content_length).decode(\"utf-8\") # <--- Gets the data itself\n\t\t\t\n\t\t\t#Filters user input (Security layer) - needs \n\t\t\tdata = []\n\t\t\tfor character in post_data:\n\t\t\t\tif character.isalnum():\n\t\t\t\t\tdata.append(character)\n\t\t\t\telif character == '&':\n\t\t\t\t\tdata.append(character)\n\t\t\t\telif character == '=':\n\t\t\t\t\tdata.append(character)\n\t\t\tdata = ''.join(data)\n\n            #Converts inputstream data to a dictonary\n\t\t\tdata = data.split('&') # <--- Split the string on the &, outputs key value pairs as a 1D list of strings\n\t\t\tfor i in data : # Recurse over each stringified key, value pair\n\t\t\t\ti = i.split('=') # <--- Split the string on the eqals sign, outputs a list containing one key and one value\n\t\t\t\tprint(i[0]+\": \"+i[1]) # <--- Show arguments for current request in terminal\n\t\t\t\tquery_components[i[0]] = i[1] # <--- Assigns the key and value from the list object to the query_components dictionary\n\n\t\t# If query_components had a value to begin with, the client has sucsessfully formatted \n\t\t# our path arguments for the server and the server has parsed it correctly\n\t\telse: \n\t\t\tfor k, v in query_components.items():\n\n\t\t\t\ttry: # Remove any encapsulating list\n\t\t\t\t\tquery_components[k] = v[0]\n\t\t\t\texcept:\n\t\t\t\t\tquery_components[k] = v\n\t\t\t\tfinally: # Show arguments for current request in terminal\n\t\t\t\t\tprint(k+\": \"+query_components[k])\n\n\t\ttry:\n\t\t\tkey = query_components[\"key\"]\n\t\t\tprint(key)\n\t\texcept:\n\t\t\treturn\n\t\telse:\n\t\t\tif key == MyHttpRequestHandler.SEC_KEY:\n\t\t\t\ttry:\n\t\t\t\t\tself.command_switch(query_components[\"command\"], query_components[\"argument\"])\n\t\t\t\texcept:\n\t\t\t\t\tpass\n\t\t\t\tcontent_length = int(self.headers['Content-Length'])\n\t\t\t\tbody = self.rfile.read(content_length)\n\t\t\t\tself.send_response(200)\n\t\t\t\tself.end_headers()\n\t\t\t\tresponse = BytesIO()\n\t\t\t\tresponse.write(b'This is a POST request. ')\n\t\t\t\tresponse.write(b'Received: ')\n\t\t\t\tresponse.write(body)\n\t\t\t\tself.wfile.write(response.getvalue())\n\t\t\telse: # if key does not match\n\t\t\t\treturn\n\n\tdef send_error(self, code, message=None):\n\n\t\tif code == 404:\n\t\t\tself.error_message_format = \"Does not compute! 404\"\n\t\tif code == 301:\n\t\t\tself.error_message_format = \"Does not compute! 301\"\n\t\tif code == 500:\n\t\t\tself.error_message_format = \"Does not compute! 500\"\n\n\t\treturn SimpleHTTPRequestHandler.send_error(self, code, message)\n\n\n\tdef command_switch(self, command, argument):\n\t\t#Parses command arguments\n\t\tif command == \"Settings\": \n\t\t\twebbrowser.open(\"https://127.0.0.1:\"+str(MyHttpRequestHandler.PORT)+\"/?key=\"+MyHttpRequestHandler.SEC_KEY, new=2)\n\t\t\n\t\telif command == \"Backup\": \n\t\t\tprint(\"System backup selected\")\n\t\t\n\t\telif command == \"Git Upload\": \n\t\t\tos.system(\"cd \"+git_folder+\" ; & \"+auto_git_script)\n\t\t\n\t\telif command == \"Trade\": \n\t\t\tprint(\"Trading mode selected\")\n\t\t\n\t\telif command == \"Program\": \n\t\t\tprint(\"Programming mode selected\")\n\t\t\n\t\telif command == \"Web Admin\": \n\t\t\tprint(\"Web Admin mode selected\")\n\t\t\n\t\telif command == \"Lock\": \n\t\t\tctypes.windll.user32.LockWorkStation() \n\t\t\n\t\telif command == \"Shutdown\": \n\t\t\tos.system(\"shutdown /s /t 1\") \n\t\t\n\t\telif command == \"Harden\": \n\t\t\tprint(\"Harden selected\")\n\t\t\n\t\telif command == \"Obfuscate\": \n\t\t\tprint(\"Obfuscate selected\")\n\t\t\n\t\telif command == \"Monitor\": \n\t\t\tprint(\"Monitor selected\")\n\t\t\n\t\telif command == \"Facial_Recognition_Lock\": \n\t\t\tcall([\"python\", \"C:\\\\Users\\\\Lenovo\\\\Files\\\\git\\\\facial-recognition-logout\\\\Facial_Recognition_V4.py\"])\n\t\t\n\t\telif command == \"Restart Server\":\n\t\t\tprint(\"Restarting server\")\n\t\t\n\t\telse:\n\t\t\tprint(\"Command not recognised\")\n\n\n\tdef start_process():\n\t\t# Creates a process and records its PID so it cna be killed later on\t\n\t\tpass\n\n\n\tdef security_strip():\n\t\t# Removes all special chars from human input, leaving just alphanumerical operators - reducing attack surface\n\t\tpass\n\n\n\tdef sanity_check():\n\t\t#checks process being run against an encrypted hash\n\t\tpass\n\n\n\tdef key_pair_generate():\n\t\t# Creates a keypair\n\t\tpass\n\n# Create an object of the above class\nhandler_object = MyHttpRequestHandler\n\nmy_server = socketserver.TCPServer((\"0.0.0.0\", PORT), handler_object)\n# Wraps socket for HTTPS\nmy_server.socket = ssl.wrap_socket (my_server.socket, certfile='./yourpemfile.pem',  server_side=True)\n# Start the server\nmy_server.serve_forever()",
 			"file": "TTWatch_2020_Server.py",
+			"file_size": 7093,
+			"file_write_time": 132553795557400742,
 			"settings":
 			{
-				"buffer_size": 456,
+				"buffer_size": 6898,
 				"encoding": "UTF-8",
 				"line_ending": "Windows",
 				"name": "import http.server"
+			}
+		},
+		{
+			"file": "keygen.ps1",
+			"settings":
+			{
+				"buffer_size": 84,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "openssl req -new -x509 -keyout yourpemfile.pem -ou"
+			}
+		},
+		{
+			"contents": "# auto-git\n#\n# STATUS: Working - Could Improve, better error handling, better UI\n#\n# DESCRIPTION: Using the context of the current working directory, thids script either updates on git repo or all of them. \n# If working above or inside the git directory all gits are updated. If working in a git repo or below just that repo is updated.\n#\n# USAGE:\n#\n# Auto-git.ps1 [ Project ], [ Commit Message ], [ User ]\n#\n# [ Project ] - Optional, if no directory specified the script will try to run in the current directory\n# [ Commit Message ] - Optional, will use a templated message if none provided.\n# [ User ] - Optional, will use the configured user if none provided.\n#\n# EXAMPLES:\n#\n# 1\n# cd ./yourUserName/git/yourGitProject\n# Auto-git.ps1 \"initial commit\", \"YOURUSERNAME\"\n#\n# 2\n# Auto-git.ps1 C:\\git\\helloWorld, \"initial commit\", \"YOURUSERNAME\"\n#\n#\n# NOTE: \n# At the moment script asks for a password everytime you need to push\n#\n# ALSO: \n# The script was designed for git on windows with keystore authentication, so i unlock an SSH key with my git credentials on. It could be easily converted to work with other systems and authentication methods.\n\n$DEFAULT_USER=\"j.baker.cwp@gmail.com\"\n$DEFAULT_COMMENT=\"Automated commit\"\n\n$newRepo=0\n$gitFolder=\"C:\\Users\\Lenovo\\files\\git\"\n$projectName=\"\"\n$projectList=(Resolve-Path .\\).Path\n\n# Argument Handling\n$projectFolder=$args[0]\nif ($projectFolder -eq $null){\n\t$projectFolder=(Resolve-Path .\\).Path\n}\n\n# List & Push all \n$msg=$args[1]\nif ($msg -eq $null){\n\t$msg=$DEFAULT_COMMENT\n}\n\n$USER=$args[2]\nif ($USER -eq $null){\n    $USER=$DEFAULT_USER\n}\n\n#User Config - just incase\ngit config --global user.email $USER\ngit config --global credential.helper manager \"cache --timeout=3600\"\n\n\n#TODO - Detect folder if inside /git update all \nif ($projectFolder -eq $gitFolder){\n    $projectList=Get-ChildItem -Directory\n}\n\n#TODO - Detect .git folder, if not present [ newRepo = True ]\n\n# Initialize and push new repo\nif ( $newRepo -eq 1 ){\n    echo \"Please ensure $projectName has been created on github\"\n    cd $projectFolder\n\n    git init\n    git add .\n\n    read-host \"Have you created the repo on github ?\"\n    \n    git remote add origin git@github.com:boejaker/$projectName\n    if ( $? -eq 0 ){ echo \"\"; echo \"Pairing with github project failed, are you sure the repo exists?\" ; exit 0;}\n    \n    git commit -m \"Initial Commit\"\n    if ( $? -eq 0 ){ echo \"\"; echo \"Commit failed\"; exit 0 ;}\n    \n    git push origin master 2>$null\n    if ( $? -eq 0 ){ echo \"\"; echo \"'Git push origin main' to complete pushing all changes\" ; exit 0 ;}\n\n} else {\n\n    echo $projectList\n\n    foreach ( $p in $projectList ){\n        echo \"$p\"\n        cd $p\n\n        #Update existing gits\n        git add . # Lists all files in directory and adds to commit.\n\n        # If git add was sucsessful\n        # TODO - Add a fallback if no .git present\n        if ( $? -eq 0 ){echo \"\"; echo \"Is this A Repo? If so, check for stray .git directories\";}\n        git commit -a -m $msg # Commits all listed files\n        if ( $? -eq 1 ){ #If there were commits to make\n            git push origin master # Pushes commits to master\n            if ( $? -eq 0 ){ echo \"\"; echo \"'Git push' to push all comitted changes\"; cd .. ;\n            } else {\n                echo \"\" ; echo \"Gitpush complete for $p\" ; echo \"\"\n            }\n        }\n        cd $gitFolder\n    }\n    echo \"\" ; echo \"git updates complete for $projectFolder\"\n}",
+			"file": "/C/Users/Lenovo/Files/git/Windows-Scripts/Git Scripts/Auto-git.ps1",
+			"file_size": 3538,
+			"file_write_time": 132549346966749467,
+			"settings":
+			{
+				"buffer_size": 3426,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Lenovo/Files/git/facial-recognition-logout/Facial_Recognition_V4.py",
+			"settings":
+			{
+				"buffer_size": 10053,
+				"line_ending": "Windows"
 			}
 		},
 		{
@@ -604,6 +636,7 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Lenovo/Files/git/T-watch-2020/TTWatch Server/TT_Watch_2020_Server.sublime-project",
 		"/C/Users/Lenovo/Files/git/multicall.js/README.md",
 		"/C/Users/Lenovo/mysite/Home/index.html",
 		"/C/Users/Lenovo/mysite/polls/views.py",
@@ -730,12 +763,11 @@
 		"/C/Users/Lenovo/Workspace/Web Server/tools.py",
 		"/C/Users/Lenovo/Documents/Medium/Top Altcoins",
 		"/C/Users/Lenovo/Documents/Medium/Why EOS will confiscate your tokens if you HODL.txt",
-		"/C/Users/Lenovo/Documents/Medium/Notebook",
-		"/C/Users/Lenovo/about max hodl.txt"
+		"/C/Users/Lenovo/Documents/Medium/Notebook"
 	],
 	"find":
 	{
-		"height": 29.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -749,6 +781,8 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"ctypes",
+			"security_key"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -756,6 +790,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"SEC_KEY"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -775,15 +810,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 456,
+						"buffer_size": 6898,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								187,
-								187
+								1279,
+								1279
 							]
 						],
 						"settings":
@@ -792,7 +827,7 @@
 							"syntax": "Packages/Python/Python.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1935.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -800,6 +835,95 @@
 				},
 				{
 					"buffer": 1,
+					"file": "keygen.ps1",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 84,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								84,
+								84
+							]
+						],
+						"settings":
+						{
+							"auto_name": "openssl req -new -x509 -keyout yourpemfile.pem -ou",
+							"syntax": "Packages/PowerShell/Support/PowershellSyntax.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/Lenovo/Files/git/Windows-Scripts/Git Scripts/Auto-git.ps1",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3426,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1171,
+								1171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PowerShell/Support/PowershellSyntax.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/Lenovo/Files/git/facial-recognition-logout/Facial_Recognition_V4.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10053,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1723,
+								1723
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "index.html",
 					"semi_transient": false,
 					"settings":
@@ -824,7 +948,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -832,7 +956,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 29.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -873,11 +997,15 @@
 	{
 		"height": 41.0
 	},
+	"output.unsaved_changes":
+	{
+		"height": 103.0
+	},
 	"pinned_build_system": "Packages/arduino-cli/arduino-cli.sublime-build",
 	"project": "TT_Watch_2020_Server.sublime-project",
 	"replace":
 	{
-		"height": 54.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":

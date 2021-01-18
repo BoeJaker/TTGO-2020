@@ -106,4 +106,29 @@ void server_setup() {
 
 void server_loop() {
   server.handleClient();
+  ArduinoOTA.handle();
+}
+
+void request(String command){
+  if(WiFi.status()== WL_CONNECTED){
+      HTTPClient http;
+      
+      // Your Domain name with URL path or IP address with path
+      http.begin(serverName);
+      
+      // Specify content-type header
+      http.addHeader("Content-Type", "text/plain");
+      // Data to send with HTTP POST
+      String httpRequestData = "key=1010&command="+command+"&argument=None";       
+      Serial.println(httpRequestData)    ;
+      // Send HTTP POST request
+      int httpResponseCode = http.POST(httpRequestData);
+      
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+        
+      // Free resources
+      http.end();
+      delay(100);
+  }
 }

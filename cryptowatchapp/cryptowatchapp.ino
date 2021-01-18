@@ -7,16 +7,20 @@
    Webserver
    GUI Generation
    Power manager - charge current adjustment & charge monitoring
-   Rasie or touch to wake
+   Raise or touch to wake
    
    Apps:
    WatchFace
    Crypto Ticker
 
-   future features
-   vibrate on low phone batt
+   TODO
+   Vibrate on low phone batt
    KeyStore
-
+   Docked mode when charging
+   NES Emulator
+   Figure out user activity via time, movement and APs
+   Vibrate if laptop battery low
+   Pass PC notifications to watch
  **/
 
 //---------------------------------------//
@@ -28,6 +32,10 @@
 #include <WiFiClientSecure.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
+
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 
 #include "CoinMarketCapApi.h"
 
@@ -73,7 +81,7 @@
 #define wifi_ssid2 {"BTHub6-W7TF"}
 #define wifi_password2 {"NbyCy4Q3RKhk"}
 
-const char* serverName = "http://192.168.1.102:8000/";
+const char* serverName = "https://192.168.1.66:8000/";
 
 // Your Screen Prefrences
 int screenOnTime =  30000; //time before watch screen times out without user input
@@ -107,7 +115,7 @@ float RSSI = 0.0;
 //Variable Declarations
 
 //Charging
-boolean charging;
+boolean charging = true;
 
 // Touch
 unsigned long lastTouchTime = 0;
@@ -207,6 +215,7 @@ void setup()
 
   wifiConnect();
   server_setup();
+  setup_ota();
 
   lastTouchTime = millis();
 }
@@ -217,20 +226,22 @@ void loop()
   deviceSleep();
 
 }
-//void IRAM_ATTR AXP202_VBUS_REMOVED_ISR(){
-//  charging = false;
-//}
-//void IRAM_ATTR AXP202_VBUS_CONNECT_ISR(){
-//  charging = true;
-//}
+void IRAM_ATTR AXP202_VBUS_REMOVED_ISR(){
+  charging = false;
+}
+void IRAM_ATTR AXP202_VBUS_CONNECT_ISR(){
+  charging = true;
+}
 
 
+                                                                                                                                                                                                                                                                                                                                            
 uint32_t targetTime = 0;
 
 void MainLoop() {
 //  initBLE();
+boolean exit_main_menu = false;
+while (exit_main_menu == false){
   switch (modeMenu()) { // Call modeMenu. The return is the desired app number
-
     case 0: // CLOCK
       while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
         server_loop();
@@ -241,6 +252,7 @@ void MainLoop() {
         }
         home_button();
       }
+      exit_main_menu = true;
       break;
 
       
@@ -251,6 +263,7 @@ void MainLoop() {
         crypto_ticker_app();
         home_button();
       }
+      exit_main_menu = true;
       break;
 
       
@@ -261,71 +274,72 @@ void MainLoop() {
         wifi_scanner();
         home_button();
       }
+      exit_main_menu = true;
       break;
 
     case 3: //SETTINGS
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        battery_app();
+//      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
+        server_loop();
+        request("Settings");
         home_button();
         delay(1000);
-      }
+//      }
       break;
 
     case 4: //BATTERY HURETECS
       while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
+        server_loop();
         battery_app();
         home_button();
         delay(1000);
-        
       }
+      exit_main_menu = true;
       break;
+      
     case 5: //PERIPHERAL DIAGNOSTICS
       while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
         server_loop();
         diagnostics();
         home_button();
       }
+      exit_main_menu = true;
       break;
       
     case 6: //SLEEP
-      break;
+        exit_main_menu = true;
+        break;
       
     case 7: //BATCHELOR
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
+        server_loop();
         digitalWrite(VIBE_PIN, HIGH);
         delay(5000);
         digitalWrite(VIBE_PIN, LOW);
-      }
-      break;
+        break;
 
      case 8: //LOCK
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
+        server_loop();
         request("Lock");
-      }
-     break;
-   }
-}
-
-void request(String command){
-  if(WiFi.status()== WL_CONNECTED){
-      HTTPClient http;
-      
-      // Your Domain name with URL path or IP address with path
-      http.begin(serverName);
-      
-      // Specify content-type header
-//      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-      // Data to send with HTTP POST
-      String httpRequestData = "key=1010&command="+command;       
-      Serial.println(httpRequestData)    ;
-      // Send HTTP POST request
-      int httpResponseCode = http.POST(httpRequestData);
-      
-      Serial.print("HTTP Response code: ");
-      Serial.println(httpResponseCode);
+        break;
         
-      // Free resources
-      http.end();
-      delay(100);
-  }
+     case 9: //LOCK
+        server_loop();
+        request("Git Upload");
+        break;
+     
+     case 10: 
+        server_loop();
+        request("Auto Lock");
+        break;
+        
+     case 11: 
+        server_loop();
+        request("Shutdown");
+        break;
+        
+     case 12: 
+        server_loop();
+        request("Trade");
+        break;
+   }  
+}
 }

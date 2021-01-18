@@ -2,13 +2,14 @@
 
   String ssidList[] = {"BTHub6-W7TF","Access Point","Galaxy Note"};
   String passwordList[] = {"NbyCy4Q3RKhk", "NbyCy4Q3RKhk", "adalovelace"};
-
+  int limit = sizeof(ssidList);
+  
 void wifiConnect(){
   int s = 0;
-  int counter = 5000;
+  int counter = 10000;
   if (WiFi.status() != WL_CONNECTED) {
     while (WiFi.status() != WL_CONNECTED) {
-      if (counter >= 5000){
+      if (counter >= 10000){
         char ssid0[60];
         char password0[60];
         ssidList[s].toCharArray(ssid0, ssidList[s].length() + 1);
@@ -20,11 +21,11 @@ void wifiConnect(){
         tft->drawString("Connecting to ", 150, 10, 2);
         tft->drawString(ssid0, 150, 25, 2);
         
-        counter =- 1;
         s += 1;
-        if (s >= sizeof(ssidList) - 1){
+        if (s >= limit){
           s = 0;
         }
+        counter=0;
       }
       delay(1);
       counter+=1;
