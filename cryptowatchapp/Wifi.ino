@@ -2,7 +2,7 @@
 
   String ssidList[] = {"BTHub6-W7TF","Access Point","Galaxy Note"};
   String passwordList[] = {"NbyCy4Q3RKhk", "NbyCy4Q3RKhk", "adalovelace"};
-  int limit = sizeof(ssidList);
+  int limit = 3;
   
 void wifiConnect(){
   int s = 0;

@@ -25,18 +25,21 @@
 
 //---------------------------------------//
 //Dependancies
-#include "config.h"
+#include "config.h" //Configuration for Twatch model
 
+//Wifi 
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
 
+//OTA Updates
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
+//Crpyto App
 #include "CoinMarketCapApi.h"
 
 //Images
@@ -75,17 +78,13 @@
 // Your Coinmarketcap API Key:
 #define APIKEY "fe231f8e-6d40-49c8-a22b-231123a7543a"
 
-// Your Wifi Network - Update the integer in the square brackets
-#define wifi_ssid1 {"Galaxy Note"}
-#define wifi_password1 {"adalovelace"}
-#define wifi_ssid2 {"BTHub6-W7TF"}
-#define wifi_password2 {"NbyCy4Q3RKhk"}
-
+//Ensure the server has a staatic IP or you will have to change the IP every time the server is assigned a new address
 const char* serverName = "https://192.168.1.66:8000/";
 
 // Your Screen Prefrences
-int screenOnTime =  30000; //time before watch screen times out without user input
-long timeUpdateInterval = 60000;
+const int default_screenOnTime = 30000; // This value is used to reset the screenontime to default if it is changed
+int screenOnTime = default_screenOnTime; // time before watch screen times out without user input
+const long timeUpdateInterval = 60000; //time before a new request is made to crypto API
 long lastTimeUpdate = millis() - timeUpdateInterval;
 
 
@@ -115,7 +114,7 @@ float RSSI = 0.0;
 //Variable Declarations
 
 //Charging
-boolean charging = true;
+boolean charging = true; //Non Functional
 
 // Touch
 unsigned long lastTouchTime = 0;
@@ -124,13 +123,15 @@ boolean touchDetected = false;
 
 // Menu
 boolean return_to_menu= false;
-
+int menu_pos = 1;
 //Coinmarketcap API
 // CoinMarketCap's limit is "no more than 10 per minute"
 // Make sure to factor in if you are requesting more than one coin.
 unsigned long api_mtbs = 60000; //mean time between api requests
 unsigned long api_due_time = 0;
 int16_t x, y;
+uint32_t targetTime = 0; //Clock interface update counter
+
 
 //Crypto
 String ticker_list[] {"BTC", "ETH", "1INCH", "UNI", "AAVE", "DOT", "LINK", "COMP", "REN", "GRT", "BAL", "KSM", "SNX", "EGLD", "ADA", "POLS", "CRV", "CHSB", "VET", "BONDLY", "ENJ", "EWT"};
@@ -185,36 +186,25 @@ void setup()
   //Power Init
   power = ttgo->power;
 
-  //Check if the RTC clock matches, if not, use compile time
-  ttgo->rtc->check();
+  //Clock Setup
+  setup_clock();
 
-  //Synchronize time to system time
-  ttgo->rtc->syncToSystem();
+  //Motion Setup
+  setup_motion();
 
-  //Backlight Init
-  ttgo->openBL(); // Turn on backlight
+  //Touch Setup
+  setup_touch();
 
-  //Touch Init
-  struct point p; //Create dummy touch object
-  attachInterrupt(TOUCH_IRQ, TOUCH_ISR, FALLING);
-  readTouch(); //Initialise touch
-
-  //Motion Init
-  ttgo->bma->begin();
-
-  //Motion Interrupt
-  ttgo->bma->attachInterrupt();
-  pinMode(BMA423_INT1, INPUT);
-  attachInterrupt(BMA423_INT1, [] { }, RISING);
-
-  //TFT Init
-  tft = ttgo->tft;
-  tft->setTextColor(TFT_GREEN);
-  tft->fillRect(0, 0, 240, 135, TFT_BLACK);
-  tft->pushImage(0, 0, btc_icon2_width, btc_icon2_height, btc_icon2);
-
+  //display Setup
+  setup_display();
+  
+  //Wifi Setup
   wifiConnect();
+  
+  //HTTP Server Setup
   server_setup();
+  
+  //OTA Updates Setup
   setup_ota();
 
   lastTouchTime = millis();
@@ -222,124 +212,13 @@ void setup()
 
 void loop()
 {
-  MainLoop();
-  deviceSleep();
+  MainLoop(); //Main Menu
+  deviceSleep(); //Sleep Function
 
 }
-void IRAM_ATTR AXP202_VBUS_REMOVED_ISR(){
-  charging = false;
-}
-void IRAM_ATTR AXP202_VBUS_CONNECT_ISR(){
-  charging = true;
-}
-
-
                                                                                                                                                                                                                                                                                                                                             
-uint32_t targetTime = 0;
 
 void MainLoop() {
 //  initBLE();
-boolean exit_main_menu = false;
-while (exit_main_menu == false){
-  switch (modeMenu()) { // Call modeMenu. The return is the desired app number
-    case 0: // CLOCK
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        server_loop();
-        if (targetTime < millis()) {
-          targetTime = millis() + 1000;
-          displayTime(ss == 0); // Call every second but only update time every minute
-          signal_indicator();
-        }
-        home_button();
-      }
-      exit_main_menu = true;
-      break;
-
-      
-    case 1: // CRYPTO TICKER
-      tft->pushImage(0, 0, btc_icon2_width, btc_icon2_height, btc_icon2);
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        server_loop();
-        crypto_ticker_app();
-        home_button();
-      }
-      exit_main_menu = true;
-      break;
-
-      
-    case 2: //WIFI SCANNER
-      WiFi.mode(WIFI_STA);
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        server_loop();
-        wifi_scanner();
-        home_button();
-      }
-      exit_main_menu = true;
-      break;
-
-    case 3: //SETTINGS
-//      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        server_loop();
-        request("Settings");
-        home_button();
-        delay(1000);
-//      }
-      break;
-
-    case 4: //BATTERY HURETECS
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        server_loop();
-        battery_app();
-        home_button();
-        delay(1000);
-      }
-      exit_main_menu = true;
-      break;
-      
-    case 5: //PERIPHERAL DIAGNOSTICS
-      while (lastTouchTime + screenOnTime > millis() & return_to_menu != true) {
-        server_loop();
-        diagnostics();
-        home_button();
-      }
-      exit_main_menu = true;
-      break;
-      
-    case 6: //SLEEP
-        exit_main_menu = true;
-        break;
-      
-    case 7: //BATCHELOR
-        server_loop();
-        digitalWrite(VIBE_PIN, HIGH);
-        delay(5000);
-        digitalWrite(VIBE_PIN, LOW);
-        break;
-
-     case 8: //LOCK
-        server_loop();
-        request("Lock");
-        break;
-        
-     case 9: //LOCK
-        server_loop();
-        request("Git Upload");
-        break;
-     
-     case 10: 
-        server_loop();
-        request("Auto Lock");
-        break;
-        
-     case 11: 
-        server_loop();
-        request("Shutdown");
-        break;
-        
-     case 12: 
-        server_loop();
-        request("Trade");
-        break;
-   }  
-}
-}
+  MenuLoop();
+}  
