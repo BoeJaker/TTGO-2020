@@ -162,7 +162,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 		print("com "+command)
 		if command == "Settings": 
 			self.process_launcher("bookmark", "https://127.0.0.1:"+str(MyHttpRequestHandler.PORT)+"/?key="+MyHttpRequestHandler.SEC_KEY, None)
-			webbrowser.open("https://127.0.0.1:"+str(MyHttpRequestHandler.PORT)+"/?key="+MyHttpRequestHandler.SEC_KEY, new=2)
+			# webbrowser.open("https://127.0.0.1:"+str(MyHttpRequestHandler.PORT)+"/?key="+MyHttpRequestHandler.SEC_KEY, new=2)
 		elif command == "Backup": 
 			print("System backup selected")
 		
@@ -228,6 +228,6 @@ handler_object = MyHttpRequestHandler
 
 my_server = socketserver.TCPServer(("0.0.0.0", PORT), handler_object)
 # Wraps socket for HTTPS
-my_server.socket = ssl.wrap_socket (my_server.socket, certfile='./yourpemfile.pem',  server_side=True)
+my_server.socket = ssl.wrap_socket (my_server.socket, certfile='C:\\Users\\Lenovo\\Files\\git\\T-watch-2020\\TTWatch Server\\yourpemfile.pem',  server_side=True)
 # Start the server
 my_server.serve_forever()

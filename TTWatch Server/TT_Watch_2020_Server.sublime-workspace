@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"proces",
+				"process_type"
+			],
+			[
 				"quer",
 				"query_components"
 			],
@@ -510,28 +514,11 @@
 			[
 				"background",
 				"color_background"
-			],
-			[
-				"curr",
-				"currency"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"contents": "# TTWatch Companion Server\n# This server allows the Twatch2020 or any other web client to remote control the PC running the server and its periphaerals\n\n# NOTE\n# A certificate must be generated using keygen before running the server - could automate later\n\n# TODO \n# Near-term:\n# Add compatability functions for use on a raspberry pi\n# Clean up arg parsing in POST function\n# Add key pair generation instead of using passwords\n\n# Long-term:\n# Add extended features to GET or even allow the server to make POST requests back to the watch to update variables internal to the watch.\n# Add a UI for adding functions (not disimilar from unified remote)\n# Add the ability to upload roms through web interface\n# Automate keygen\n\n# Server Imports\nimport http.server\nimport socketserver\nfrom urllib.parse import urlparse, parse_qs\nimport ssl\n\n# Regex\nimport re\n\n# Operating System Interfacing\nimport os\nimport ctypes\nfrom subprocess import call\n\nfrom io import BytesIO\n\n# Web Browser Control\nimport webbrowser\n\n# Folder Locations\ngit_folder = '\"C:\\\\Users\\\\Lenovo\\\\Files\\\\git\"'\nauto_git_script = '\"C:\\\\Users\\\\Lenovo\\\\Files\\\\git\\\\Windows-Scripts\\\\Git_Scripts\\\\Auto-git.ps1\"'\n\n# Server Setup\nPORT = 8000\n\n# HTTP Request Class\nclass MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):\n\n\tPORT = 8000\n\tSEC_KEY = \"1010\" # This key is rudimentary access control to be substituted with HTTPS for encryption & a further access keypair for both the server and client\n\n\tdef do_GET(self): # Parses GET requests\n\n\t\tquery_components = parse_qs(urlparse(self.path).query)\n\t\tprint(query_components)\n\n\t\tregex='/\\?.*key='+MyHttpRequestHandler.SEC_KEY+\".*\"\n\n\t\tif re.match(regex,  self.path) is not None:\n\n\t\t\ttry:\n\t\t\t\tself.command_switch(query_components[\"command\"][0], query_components[\"argument\"][0])\n\t\t\texcept:\n\t\t\t\tpass\n\n\t\t\tself.path = 'index.html'\n\t\t\treturn http.server.SimpleHTTPRequestHandler.do_GET(self)\n\t\telse: # if path did not contain key\n\t\t\treturn\n\n\tdef do_POST(self): # Parses POST Requests\n\t#NOTE - the data parsing portion of this code is a hot mess. It needs unifying so that instead of the two types of input being processed in its own way \n\t# the data is pulled, converted to the same format e.g. a string, then checked for bad input. after that the string can be spilt into a dictonary.\n\t# Note that data pulled from parse_qs is encapsulated in a list so needs to be called with a [0].\n\t\t\n\t\tquery_components = parse_qs(urlparse(self.path).query)# Tries to acquire url arguments the normal way\n\t\t\n\t\t# If query_components empty, fallback, try to acquire them directly from the input stream\n\t\tif (len(query_components) <= 1):\n\n\t\t\tcontent_length = int(self.headers['Content-Length']) # <--- Gets the size of data\n\t\t\tpost_data = self.rfile.read(content_length).decode(\"utf-8\") # <--- Gets the data itself\n\t\t\t\n\t\t\t#Filters user input (Security layer) - needs \n\t\t\tdata = []\n\t\t\tfor character in post_data:\n\t\t\t\tif character.isalnum():\n\t\t\t\t\tdata.append(character)\n\t\t\t\telif character == '&':\n\t\t\t\t\tdata.append(character)\n\t\t\t\telif character == '=':\n\t\t\t\t\tdata.append(character)\n\t\t\tdata = ''.join(data)\n\n            #Converts inputstream data to a dictonary\n\t\t\tdata = data.split('&') # <--- Split the string on the &, outputs key value pairs as a 1D list of strings\n\t\t\tfor i in data : # Recurse over each stringified key, value pair\n\t\t\t\ti = i.split('=') # <--- Split the string on the eqals sign, outputs a list containing one key and one value\n\t\t\t\tprint(i[0]+\": \"+i[1]) # <--- Show arguments for current request in terminal\n\t\t\t\tquery_components[i[0]] = i[1] # <--- Assigns the key and value from the list object to the query_components dictionary\n\n\t\t# If query_components had a value to begin with, the client has sucsessfully formatted \n\t\t# our path arguments for the server and the server has parsed it correctly\n\t\telse: \n\t\t\tfor k, v in query_components.items():\n\n\t\t\t\ttry: # Remove any encapsulating list\n\t\t\t\t\tquery_components[k] = v[0]\n\t\t\t\texcept:\n\t\t\t\t\tquery_components[k] = v\n\t\t\t\tfinally: # Show arguments for current request in terminal\n\t\t\t\t\tprint(k+\": \"+query_components[k])\n\n\t\ttry:\n\t\t\tkey = query_components[\"key\"]\n\t\t\tprint(key)\n\t\texcept:\n\t\t\treturn\n\t\telse:\n\t\t\tif key == MyHttpRequestHandler.SEC_KEY:\n\t\t\t\ttry:\n\t\t\t\t\tself.command_switch(query_components[\"command\"], query_components[\"argument\"])\n\t\t\t\texcept:\n\t\t\t\t\tpass\n\t\t\t\tcontent_length = int(self.headers['Content-Length'])\n\t\t\t\tbody = self.rfile.read(content_length)\n\t\t\t\tself.send_response(200)\n\t\t\t\tself.end_headers()\n\t\t\t\tresponse = BytesIO()\n\t\t\t\tresponse.write(b'This is a POST request. ')\n\t\t\t\tresponse.write(b'Received: ')\n\t\t\t\tresponse.write(body)\n\t\t\t\tself.wfile.write(response.getvalue())\n\t\t\telse: # if key does not match\n\t\t\t\treturn\n\n\tdef send_error(self, code, message=None):\n\n\t\tif code == 404:\n\t\t\tself.error_message_format = \"Does not compute! 404\"\n\t\tif code == 301:\n\t\t\tself.error_message_format = \"Does not compute! 301\"\n\t\tif code == 500:\n\t\t\tself.error_message_format = \"Does not compute! 500\"\n\n\t\treturn SimpleHTTPRequestHandler.send_error(self, code, message)\n\n\n\tdef command_switch(self, command, argument):\n\t\t#Parses command arguments\n\t\tif command == \"Settings\": \n\t\t\twebbrowser.open(\"https://127.0.0.1:\"+str(MyHttpRequestHandler.PORT)+\"/?key=\"+MyHttpRequestHandler.SEC_KEY, new=2)\n\t\t\n\t\telif command == \"Backup\": \n\t\t\tprint(\"System backup selected\")\n\t\t\n\t\telif command == \"Git Upload\": \n\t\t\tos.system(\"cd \"+git_folder+\" ; & \"+auto_git_script)\n\t\t\n\t\telif command == \"Trade\": \n\t\t\tprint(\"Trading mode selected\")\n\t\t\n\t\telif command == \"Program\": \n\t\t\tprint(\"Programming mode selected\")\n\t\t\n\t\telif command == \"Web Admin\": \n\t\t\tprint(\"Web Admin mode selected\")\n\t\t\n\t\telif command == \"Lock\": \n\t\t\tctypes.windll.user32.LockWorkStation() \n\t\t\n\t\telif command == \"Shutdown\": \n\t\t\tos.system(\"shutdown /s /t 1\") \n\t\t\n\t\telif command == \"Harden\": \n\t\t\tprint(\"Harden selected\")\n\t\t\n\t\telif command == \"Obfuscate\": \n\t\t\tprint(\"Obfuscate selected\")\n\t\t\n\t\telif command == \"Monitor\": \n\t\t\tprint(\"Monitor selected\")\n\t\t\n\t\telif command == \"Facial_Recognition_Lock\": \n\t\t\tcall([\"python\", \"C:\\\\Users\\\\Lenovo\\\\Files\\\\git\\\\facial-recognition-logout\\\\Facial_Recognition_V4.py\"])\n\t\t\n\t\telif command == \"Restart Server\":\n\t\t\tprint(\"Restarting server\")\n\t\t\n\t\telse:\n\t\t\tprint(\"Command not recognised\")\n\n\n\tdef start_process():\n\t\t# Creates a process and records its PID so it cna be killed later on\t\n\t\tpass\n\n\n\tdef security_strip():\n\t\t# Removes all special chars from human input, leaving just alphanumerical operators - reducing attack surface\n\t\tpass\n\n\n\tdef sanity_check():\n\t\t#checks process being run against an encrypted hash\n\t\tpass\n\n\n\tdef key_pair_generate():\n\t\t# Creates a keypair\n\t\tpass\n\n# Create an object of the above class\nhandler_object = MyHttpRequestHandler\n\nmy_server = socketserver.TCPServer((\"0.0.0.0\", PORT), handler_object)\n# Wraps socket for HTTPS\nmy_server.socket = ssl.wrap_socket (my_server.socket, certfile='./yourpemfile.pem',  server_side=True)\n# Start the server\nmy_server.serve_forever()",
-			"file": "TTWatch_2020_Server.py",
-			"file_size": 7093,
-			"file_write_time": 132553795557400742,
-			"settings":
-			{
-				"buffer_size": 6898,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "import http.server"
-			}
-		},
 		{
 			"file": "keygen.ps1",
 			"settings":
@@ -806,35 +793,6 @@
 			[
 				{
 					"buffer": 0,
-					"file": "TTWatch_2020_Server.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6898,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1279,
-								1279
-							]
-						],
-						"settings":
-						{
-							"auto_name": "import http.server",
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1935.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "keygen.ps1",
 					"semi_transient": false,
 					"settings":
@@ -847,7 +805,7 @@
 						[
 							[
 								84,
-								84
+								0
 							]
 						],
 						"settings":
@@ -859,11 +817,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "/C/Users/Lenovo/Files/git/Windows-Scripts/Git Scripts/Auto-git.ps1",
 					"semi_transient": false,
 					"settings":
@@ -889,11 +847,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "/C/Users/Lenovo/Files/git/facial-recognition-logout/Facial_Recognition_V4.py",
 					"semi_transient": false,
 					"settings":
@@ -919,11 +877,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "index.html",
 					"semi_transient": false,
 					"settings":
@@ -948,7 +906,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
